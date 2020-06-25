@@ -1,5 +1,5 @@
 [package]
-name = "rust-practice-actix"
+name = "rust-practice-actix-web"
 version = "0.1.0"
 authors = ["tcross <tom.bz2@gmail.com>"]
 edition = "2018"
