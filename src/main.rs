@@ -1,22 +1,25 @@
 use actix_web::{web, App, Responder, HttpServer};
 use deadpool_redis::{cmd, Config, Pool};
+use redis::AsyncCommands;
 
 async fn get_from_redis(key: String, redis_pool: web::Data<Pool>) -> String {
     let mut conn = redis_pool.get().await.unwrap();
+    return conn.get(key).await.unwrap();
 
-    return cmd("GET")
-        .arg(&[key])
-        .query_async(&mut conn)
-        .await.unwrap_or_default();
+    // return cmd("GET")
+    //     .arg(&[key])
+    //     .query_async(&mut conn)
+    //     .await.unwrap_or_default();
 }
 
 async fn add_to_redis(key: String, val: String, redis_pool: web::Data<Pool>) {
     let mut conn = redis_pool.get().await.unwrap();
+    conn.set(key, val).await.unwrap();
 
-    return cmd("SET")
-        .arg(&[key, val])
-        .execute_async(&mut conn)
-        .await.unwrap_or_default();
+    // return cmd("SET")
+    //     .arg(&[key, val])
+    //     .execute_async(&mut conn)
+    //     .await.unwrap_or_default();
 }
 
 async fn index(path_params: web::Path<(String, u32)>, redis_pool: web::Data<Pool>) -> impl Responder {
