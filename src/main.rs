@@ -4,12 +4,12 @@ use redis::AsyncCommands;
 
 async fn get_from_redis(key: String, redis_pool: web::Data<Pool>) -> String {
     let mut conn = redis_pool.get().await.unwrap();
-    return conn.get(key).await.unwrap();
+    return conn.get(key).await.unwrap_or_default();
 }
 
 async fn add_to_redis(key: String, val: String, redis_pool: web::Data<Pool>) {
     let mut conn = redis_pool.get().await.unwrap();
-    let _:() = conn.set(key, val).await.unwrap();
+    let _:() = conn.set(key, val).await.unwrap_or_default();
 }
 
 async fn index(path_params: web::Path<(String, u32)>, redis_pool: web::Data<Pool>) -> impl Responder {
