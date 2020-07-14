@@ -1,6 +1,6 @@
 use actix_web::{web, App, Responder, HttpServer};
 use deadpool_redis::{Config, Pool};
-use redis::AsyncCommands;
+use deadpool_redis::redis::AsyncCommands;
 
 async fn get_from_redis(key: String, redis_pool: web::Data<Pool>) -> String {
     let mut conn = redis_pool.get().await.unwrap();
